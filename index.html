@@ -1,110 +1,48 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Animated Homepage with Scroll</title>
+  <title>Sprite Animation</title>
   <style>
-    /* Reset */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: black;
       height: 100%;
       width: 100%;
-      overflow-x: hidden;
-      font-family: sans-serif;
-      background: black;
     }
-    /* Top Section */
-    #topSection {
-      position: relative;
-      height: 100vh;
-      overflow: hidden;
-    }
-    canvas#spriteCanvas {
+    canvas {
       display: block;
       width: 100vw;
       height: 100vh;
     }
-    .overlay {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-    }
-    .cta-button {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%) translateY(30px);
-      opacity: 0;
-      max-width: 70%;
-      width: 300px;
-      animation: fadeSlideUp 0.6s ease-out forwards;
-      animation-delay: 0.5s;
-    }
-    @keyframes fadeSlideUp {
-      from { opacity: 0; transform: translateX(-50%) translateY(30px); }
-      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
-    }
-    /* Scroll Section */
-    #scrollSection {
-      position: relative;
-      height: 100vh;
-      overflow: hidden;
-    }
-    .gradient-bg {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: url('gradient.png') center center / cover no-repeat;
-      transform: scale(1.1);
-    }
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: #fff;
-      font-size: 14px;
-      background: #000;
-    }
   </style>
 </head>
 <body>
-  <div id="topSection">
-    <canvas id="spriteCanvas"></canvas>
-    <div class="overlay">
-      <img src="button.png" class="cta-button" alt="Shop Now">
-    </div>
-  </div>
-  <section id="scrollSection">
-    <div class="gradient-bg"></div>
-  </section>
-  <footer>
-    <p>JaBB 2025. © All rights reserved.</p>
-  </footer>
+  <canvas id="spriteCanvas"></canvas>
   <script>
-    // Sprite animation loop using WebP sprite sheet
     const canvas = document.getElementById('spriteCanvas');
     const ctx = canvas.getContext('2d');
     const img = new Image();
     img.src = 'sprite_sheet.webp';
+
+    const frameWidth = 1080;
+    const frameHeight = 1920;
+    const totalFrames = 8;
+    const fps = 30;
+    let currentFrame = 0;
+
+    canvas.width = frameWidth;
+    canvas.height = frameHeight;
+
     img.onload = () => {
-      const totalFrames = 8;
-      const frameWidth = img.width / totalFrames;
-      const frameHeight = img.height;
-      canvas.width = frameWidth;
-      canvas.height = frameHeight;
-      let current = 0;
-      const fps = 30;
       setInterval(() => {
         ctx.clearRect(0, 0, frameWidth, frameHeight);
-        ctx.drawImage(img,
-          current * frameWidth, 0,
-          frameWidth, frameHeight,
-          0, 0,
-          frameWidth, frameHeight
-        );
-        current = (current + 1) % totalFrames;
+        ctx.drawImage(img, currentFrame * frameWidth, 0, frameWidth, frameHeight, 0, 0, frameWidth, frameHeight);
+        currentFrame = (currentFrame + 1) % totalFrames;
       }, 1000 / fps);
     };
   </script>
